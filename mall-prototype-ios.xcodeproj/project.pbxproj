@@ -6,6 +6,10 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		5A6F4F122E01298A00AF90C4 /* Unicorn in Frameworks */ = {isa = PBXBuildFile; productRef = 5A6F4F112E01298A00AF90C4 /* Unicorn */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
 		D8AE34422DDDF98600D54771 /* mall-prototype-ios.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "mall-prototype-ios.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -23,6 +27,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5A6F4F122E01298A00AF90C4 /* Unicorn in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -65,6 +70,7 @@
 			);
 			name = "mall-prototype-ios";
 			packageProductDependencies = (
+				5A6F4F112E01298A00AF90C4 /* Unicorn */,
 			);
 			productName = "mall-prototype-ios";
 			productReference = D8AE34422DDDF98600D54771 /* mall-prototype-ios.app */;
@@ -94,6 +100,9 @@
 			);
 			mainGroup = D8AE34392DDDF98600D54771;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				5A6F4F102E01298A00AF90C4 /* XCRemoteSwiftPackageReference "unicorn-ios-sdk" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = D8AE34432DDDF98600D54771 /* Products */;
 			projectDirPath = "";
@@ -255,6 +264,9 @@
 				DEVELOPMENT_TEAM = 5876G593AT;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSBluetoothAlwaysUsageDescription = "Bluetooth is used for indoor positioning to provide accurate location inside buildings.";
+				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "This app needs your location to provide indoor navigation, even when the app is in the background.";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "This app needs your location to provide indoor navigation and to show your position on the map.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -284,6 +296,9 @@
 				DEVELOPMENT_TEAM = 5876G593AT;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSBluetoothAlwaysUsageDescription = "Bluetooth is used for indoor positioning to provide accurate location inside buildings.";
+				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "This app needs your location to provide indoor navigation, even when the app is in the background.";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "This app needs your location to provide indoor navigation and to show your position on the map.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -324,6 +339,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		5A6F4F102E01298A00AF90C4 /* XCRemoteSwiftPackageReference "unicorn-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/time-location-systems/unicorn-ios-sdk";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.10.1;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		5A6F4F112E01298A00AF90C4 /* Unicorn */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 5A6F4F102E01298A00AF90C4 /* XCRemoteSwiftPackageReference "unicorn-ios-sdk" */;
+			productName = Unicorn;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = D8AE343A2DDDF98600D54771 /* Project object */;
 }
