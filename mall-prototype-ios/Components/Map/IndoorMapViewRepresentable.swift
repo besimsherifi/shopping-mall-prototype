@@ -29,6 +29,7 @@ struct IndoorMapViewRepresentable: UIViewRepresentable {
     // Internal state
     @State private var lastPosition: Position?
     @State private var siteCoordinate: CLLocationCoordinate2D?
+    @State private var previousOutdoorRegion: MKCoordinateRegion?
     
     func makeUIView(context: Context) -> MKMapView {
         coordinator.parent = self
@@ -48,6 +49,11 @@ struct IndoorMapViewRepresentable: UIViewRepresentable {
         Unicorn.PositioningService.registerStateCallback { state, error in
             DispatchQueue.main.async {
                 if state == .idle {
+                    // Save current region before switching to indoor mode
+                    if self.isIndoorMode {
+                        self.previousOutdoorRegion = mapView.region
+                    }
+                    
                     // Clear device marker and reset state
                     self.updateDeviceMarker(mapView: mapView, position: nil)
                     self.isIndoorMode = false
@@ -55,6 +61,14 @@ struct IndoorMapViewRepresentable: UIViewRepresentable {
                     mapView.showsUserLocation = true
                     // Clear overlays
                     self.clearSite(mapView: mapView)
+                    
+                    // Animate zoom out to previous outdoor view
+                    if let previousRegion = self.previousOutdoorRegion {
+                        UIView.animate(withDuration: 2.5, delay: 0.2, options: [.curveEaseInOut], animations: {
+                            mapView.setRegion(previousRegion, animated: false)
+                        })
+                        print("🔙 Zooming out to previous outdoor view")
+                    }
                 }
                 
                 if let error = error {
@@ -68,21 +82,32 @@ struct IndoorMapViewRepresentable: UIViewRepresentable {
                 self.updateDeviceMarker(mapView: mapView, position: position)
                 self.userLocation = position.coordinate
                 
-                // Center map on position if indoor mode is active
+                // Center map on target REMA coordinates when in indoor mode
                 if self.isIndoorMode {
+                    let targetCoordinate = CLLocationCoordinate2D(latitude: 59.91506, longitude: 10.78766)
                     let camera = MKMapCamera(
-                        lookingAtCenter: position.coordinate,
-                        fromDistance: 100,
+                        lookingAtCenter: targetCoordinate,
+                        fromDistance: 150, // Increased distance for better overview
                         pitch: 0,
-                        heading: 0
+                        heading: 55 // Match the heading from site loading
                     )
-                    mapView.setCamera(camera, animated: true)
+                    
+                    // Slower, more gradual zoom animation
+                    UIView.animate(withDuration: 2.0, delay: 0, options: [.curveEaseInOut], animations: {
+                        mapView.setCamera(camera, animated: false)
+                    })
                 }
             }
         }
         
         Unicorn.PositioningService.registerSiteCallback { site in
             DispatchQueue.main.async {
+                // Save current outdoor region before entering indoor mode
+                if let site = site, !self.isIndoorMode {
+                    self.previousOutdoorRegion = mapView.region
+                    print("💾 Saved outdoor region: \(mapView.region)")
+                }
+                
                 self.updateSite(mapView: mapView, site: site)
                 if let site = site {
                     self.isIndoorMode = true
@@ -124,18 +149,26 @@ struct IndoorMapViewRepresentable: UIViewRepresentable {
     private func updateSite(mapView: MKMapView, site: Unicorn.Site?) {
         siteCoordinate = site?.coordinate
         
-        // Pan to site coordinate when available
+        // Pan to site coordinate when available, but prefer user position if available
         if let coordinate = siteCoordinate, CLLocationCoordinate2DIsValid(coordinate) {
             print("Valid site coordinates received: \(coordinate)")
             
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                // Use specific REMA coordinates for consistent centering
+                let targetCoordinate = CLLocationCoordinate2D(latitude: 59.91506, longitude: 10.78766)
+                
                 let camera = MKMapCamera(
-                    lookingAtCenter: coordinate,
-                    fromDistance: 100,
+                    lookingAtCenter: targetCoordinate,
+                    fromDistance: 150, // Slightly pulled back for better overview
                     pitch: 0,
-                    heading: 0
+                    heading: 55
                 )
-                mapView.setCamera(camera, animated: true)
+                
+                // Slower, more gradual zoom animation for site loading
+                UIView.animate(withDuration: 3.0, delay: 0, options: [.curveEaseInOut], animations: {
+                    mapView.setCamera(camera, animated: false)
+                })
+                print("🎯 Camera centered on target coordinates: \(targetCoordinate)")
             }
         }
         
