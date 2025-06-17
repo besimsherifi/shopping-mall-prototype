@@ -38,7 +38,7 @@ struct IndoorLocation: Identifiable {
         ),
         IndoorLocation(
             name: "REMA 1000 Ensjø",
-            coordinate: CLLocationCoordinate2D(latitude: 59.915017, longitude: 10.788041),
+			coordinate: CLLocationCoordinate2D(latitude: 59.91506, longitude: 10.78766),
             siteIdKey: "remaEnsjo"
         ),
         IndoorLocation(
