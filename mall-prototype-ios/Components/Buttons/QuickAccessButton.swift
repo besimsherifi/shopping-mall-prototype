@@ -9,6 +9,7 @@ import SwiftUI
 
 struct QuickAccessButton: View {
     let item: QuickAccessItem
+    var action: () -> Void  // Add this closure
     
     var body: some View {
         VStack(spacing: 12) {
@@ -35,7 +36,9 @@ struct QuickAccessButton: View {
                 .multilineTextAlignment(.center)
                 .lineLimit(2)
         }
+        .contentShape(Rectangle())  // Makes entire area tappable
         .onTapGesture {
+            action()
             print("Tapped: \(item.title)")
         }
     }

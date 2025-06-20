@@ -9,26 +9,22 @@ import SwiftUI
 
 struct ShopCard: View {
     let shop: ShopItem
-    
+
     var body: some View {
         VStack(spacing: 8) {
-            // Image Container
-            RoundedRectangle(cornerRadius: 12)
-                .fill(shop.backgroundColor)
+            // Image as Card Cover
+            Image(shop.imageName)
+                .resizable()
+                .scaledToFill()
                 .frame(width: 140, height: 140)
-                .overlay(
-                    // Placeholder for actual image
-                    VStack {
-                        Image(systemName: "bag.fill")
-                            .font(.system(size: 40))
-                            .foregroundColor(.white.opacity(0.8))
-                        
-                        Text(shop.name.prefix(1))
-                            .font(.system(size: 24, weight: .bold))
-                            .foregroundColor(.white)
-                    }
+                .clipped()
+                .cornerRadius(12)
+                .overlay( // Border
+                    RoundedRectangle(cornerRadius: 12)
+                        .stroke(Color.gray.opacity(0.3), lineWidth: 1)
                 )
-            
+                .shadow(color: Color.black.opacity(0.15), radius: 5, x: 0, y: 3)
+
             // Shop Name
             Text(shop.name)
                 .font(.system(size: 16, weight: .medium))

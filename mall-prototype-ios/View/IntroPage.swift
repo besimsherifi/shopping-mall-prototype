@@ -59,13 +59,13 @@ struct IntroPage: View {
                         .foregroundStyle(.white.secondary)
                         .blurOpacityEffect(initialAnimation)
                     
-                    Text("Shopping Mall")
+                    Text("East Gate")
                         .font(.largeTitle.bold())
                         .foregroundStyle(.white)
                         .textRenderer(TitleTextRenderer(progress: titleProgress))
                         .padding(.bottom,12)
                     
-                    Text("Discover shopping, dining, and entertainment all in one place. From top brands to tasty bites and fun for the whole family, Shopping Mall is your go-to destination for a great day out!")
+                    Text("Discover shopping, dining, and entertainment all in one place. From top brands to tasty bites and fun for the whole family, East Gate is your go-to destination for a great day out!")
                         .font(.callout)
                         .multilineTextAlignment(.center)
                         .foregroundStyle(.white.secondary)

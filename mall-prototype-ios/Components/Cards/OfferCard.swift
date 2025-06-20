@@ -14,26 +14,19 @@ struct OfferCard: View {
     let subText: String
     let dateRange: String
     
+    @State private var showComingSoonModal = false
+
     var body: some View {
         ZStack {
-            // Background Image
-            AsyncImage(url: URL(string: imageName)) { image in
-                image
-                    .resizable()
-                    .aspectRatio(contentMode: .fill)
-            } placeholder: {
-                // Placeholder with gradient background
-                LinearGradient(
-                    colors: [Color.blue.opacity(0.6), Color.purple.opacity(0.8)],
-                    startPoint: .topLeading,
-                    endPoint: .bottomTrailing
-                )
-            }
-            .frame(width: 280, height: 160)
-            .clipped()
-            .cornerRadius(12)
-            
-            // Dark overlay for text readability
+            // Local Image as background
+            Image(imageName)
+                .resizable()
+                .aspectRatio(contentMode: .fill)
+                .frame(width: 280, height: 160)
+                .clipped()
+                .cornerRadius(12)
+
+            // Dark gradient overlay
             Rectangle()
                 .fill(
                     LinearGradient(
@@ -43,7 +36,8 @@ struct OfferCard: View {
                     )
                 )
                 .cornerRadius(12)
-            
+                .frame(width: 280, height: 160)
+
             // Content Overlay
             VStack(alignment: .leading, spacing: 4) {
                 // Top title
@@ -55,21 +49,20 @@ struct OfferCard: View {
                         .textCase(.uppercase)
                     Spacer()
                 }
-                
+
                 Spacer()
-                
-                // Main content at bottom
+
                 VStack(alignment: .leading, spacing: 2) {
                     Text(mainText)
                         .font(.title3)
                         .fontWeight(.bold)
                         .foregroundColor(.white)
-                    
+
                     Text(subText)
                         .font(.title3)
                         .fontWeight(.bold)
                         .foregroundColor(.white)
-                    
+
                     Text(dateRange)
                         .font(.caption)
                         .foregroundColor(.white.opacity(0.8))
@@ -81,5 +74,13 @@ struct OfferCard: View {
         }
         .frame(width: 280, height: 160)
         .shadow(color: .black.opacity(0.1), radius: 8, x: 0, y: 4)
+        .onTapGesture {
+            showComingSoonModal = true
+        }
+        .sheet(isPresented: $showComingSoonModal) {
+            ComingSoonModal()
+                .presentationDetents([.fraction(0.3)])
+                .presentationDragIndicator(.visible)
+        }
     }
 }

@@ -7,11 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		5A6F4F122E01298A00AF90C4 /* Unicorn in Frameworks */ = {isa = PBXBuildFile; productRef = 5A6F4F112E01298A00AF90C4 /* Unicorn */; };
+		D8B7074E2E01A5360095C2CC /* Unicorn in Frameworks */ = {isa = PBXBuildFile; productRef = D8B7074D2E01A5360095C2CC /* Unicorn */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		D8AE34422DDDF98600D54771 /* mall-prototype-ios.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "mall-prototype-ios.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		D8B7074C2E01A5270095C2CC /* unicorn-ios-sdk-main */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = "unicorn-ios-sdk-main"; path = "../../../Downloads/unicorn-ios-sdk-main"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -27,7 +28,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5A6F4F122E01298A00AF90C4 /* Unicorn in Frameworks */,
+				D8B7074E2E01A5360095C2CC /* Unicorn in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -38,6 +39,7 @@
 			isa = PBXGroup;
 			children = (
 				D8AE34442DDDF98600D54771 /* mall-prototype-ios */,
+				D8B7074B2E01A5270095C2CC /* Frameworks */,
 				D8AE34432DDDF98600D54771 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -48,6 +50,14 @@
 				D8AE34422DDDF98600D54771 /* mall-prototype-ios.app */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		D8B7074B2E01A5270095C2CC /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				D8B7074C2E01A5270095C2CC /* unicorn-ios-sdk-main */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -70,7 +80,7 @@
 			);
 			name = "mall-prototype-ios";
 			packageProductDependencies = (
-				5A6F4F112E01298A00AF90C4 /* Unicorn */,
+				D8B7074D2E01A5360095C2CC /* Unicorn */,
 			);
 			productName = "mall-prototype-ios";
 			productReference = D8AE34422DDDF98600D54771 /* mall-prototype-ios.app */;
@@ -101,7 +111,6 @@
 			mainGroup = D8AE34392DDDF98600D54771;
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
-				5A6F4F102E01298A00AF90C4 /* XCRemoteSwiftPackageReference "unicorn-ios-sdk" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = D8AE34432DDDF98600D54771 /* Products */;
@@ -264,6 +273,7 @@
 				DEVELOPMENT_TEAM = 5876G593AT;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = "East Gate";
 				INFOPLIST_KEY_NSBluetoothAlwaysUsageDescription = "Bluetooth is used for indoor positioning to provide accurate location inside buildings.";
 				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "This app needs your location to provide indoor navigation, even when the app is in the background.";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "This app needs your location to provide indoor navigation and to show your position on the map.";
@@ -296,6 +306,7 @@
 				DEVELOPMENT_TEAM = 5876G593AT;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = "East Gate";
 				INFOPLIST_KEY_NSBluetoothAlwaysUsageDescription = "Bluetooth is used for indoor positioning to provide accurate location inside buildings.";
 				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "This app needs your location to provide indoor navigation, even when the app is in the background.";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "This app needs your location to provide indoor navigation and to show your position on the map.";
@@ -340,21 +351,9 @@
 		};
 /* End XCConfigurationList section */
 
-/* Begin XCRemoteSwiftPackageReference section */
-		5A6F4F102E01298A00AF90C4 /* XCRemoteSwiftPackageReference "unicorn-ios-sdk" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/time-location-systems/unicorn-ios-sdk";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 0.10.1;
-			};
-		};
-/* End XCRemoteSwiftPackageReference section */
-
 /* Begin XCSwiftPackageProductDependency section */
-		5A6F4F112E01298A00AF90C4 /* Unicorn */ = {
+		D8B7074D2E01A5360095C2CC /* Unicorn */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 5A6F4F102E01298A00AF90C4 /* XCRemoteSwiftPackageReference "unicorn-ios-sdk" */;
 			productName = Unicorn;
 		};
 /* End XCSwiftPackageProductDependency section */
