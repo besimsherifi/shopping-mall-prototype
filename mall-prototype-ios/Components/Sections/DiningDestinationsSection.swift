@@ -9,10 +9,12 @@ import SwiftUI
 
 struct DiningDestinationsSection: View {
     let restaurants = [
-        RestaurantItem(name: "Social House", imageName: "social_house", backgroundColor: Color(red: 0.9, green: 0.7, blue: 0.4)),
-        RestaurantItem(name: "Parker's", imageName: "parkers", backgroundColor: Color(red: 0.85, green: 0.9, blue: 0.85)),
-        RestaurantItem(name: "Hai Di Lao", imageName: "hai_di_lao", backgroundColor: Color.black)
+        RestaurantItem(name: "Dominos", imageName: "dominos", backgroundColor: Color(red: 0.9, green: 0.7, blue: 0.4)),
+        RestaurantItem(name: "KFC", imageName: "kfc", backgroundColor: Color(red: 0.85, green: 0.9, blue: 0.85)),
+        RestaurantItem(name: "Sarajeva", imageName: "sarajeva", backgroundColor: Color.black)
     ]
+    
+    @State private var showComingSoonModal = false // Add state for modal control
     
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
@@ -26,7 +28,7 @@ struct DiningDestinationsSection: View {
                 Spacer()
                 
                 Button("View All") {
-                    // Action for view all
+                    showComingSoonModal = true // Show modal when tapped
                 }
                 .font(.system(size: 14, weight: .regular))
                 .foregroundColor(.secondary)
@@ -36,13 +38,22 @@ struct DiningDestinationsSection: View {
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack(spacing: 16) {
                     ForEach(restaurants, id: \.name) { restaurant in
-                        RestaurantCard(restaurant: restaurant)
+                        Button {
+                            showComingSoonModal = true // Show modal when card is tapped
+                        } label: {
+                            RestaurantCard(restaurant: restaurant)
+                        }
+                        .buttonStyle(.plain) // Maintain original card styling
                     }
                 }
                 .padding(.horizontal, 16)
             }
             .scrollClipDisabled()
             .padding(.horizontal, -16)
+        }
+        .sheet(isPresented: $showComingSoonModal) {
+            ComingSoonModal() // Reuse the same modal component
+                .presentationDetents([.fraction(0.3)]) // Consistent modal size
         }
     }
 }

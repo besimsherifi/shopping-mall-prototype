@@ -11,6 +11,7 @@ struct ExploreView: View {
     @State private var searchText = ""
     @State private var selectedCategory = 0
     @State private var showingFilters = false
+    @State private var showComingSoonModal = false
     
     private let categories = ["All", "Shopping", "Dining", "Entertainment", "Services", "Events"]
     
@@ -50,13 +51,6 @@ struct ExploreView: View {
             .background(Color(.systemGroupedBackground))
             .navigationTitle("Explore")
             .navigationBarTitleDisplayMode(.large)
-            .toolbar {
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    Button(action: { showingFilters.toggle() }) {
-                        Image(systemName: "slider.horizontal.3")
-                    }
-                }
-            }
         }
         .sheet(isPresented: $showingFilters) {
             FilterView()
@@ -115,36 +109,40 @@ struct ExploreView: View {
     private var featuredBannerSection: some View {
         VStack(spacing: 0) {
             ZStack {
-                // Background Gradient
-                LinearGradient(
-                    colors: [Color.purple.opacity(0.8), Color.blue.opacity(0.9)],
-                    startPoint: .topLeading,
-                    endPoint: .bottomTrailing
-                )
-                .frame(height: 200)
+                // Festival Background Image (you'd need to add this to your assets)
+                Image("festival")
+                    .resizable()
+                    .scaledToFill()
+                    .frame(height: 200)
+                    .overlay(
+                        Color.purple.opacity(0.3) // Tint to match your color scheme
+                    )
                 
-                // Content
+                // Content remains the same
                 VStack(spacing: 12) {
-                    Text("SUMMER FESTIVAL")
-                        .font(.system(size: 24, weight: .bold))
-                        .foregroundColor(.white)
-                        .textCase(.uppercase)
+                    HStack(spacing: 8) {
+                        Image(systemName: "sparkles")
+                        Text("SUMMER FESTIVAL")
+                        Image(systemName: "sparkles")
+                    }
+                    .font(.system(size: 24, weight: .bold))
+                    .foregroundColor(.white)
                     
                     Text("Discover amazing deals and experiences")
                         .font(.system(size: 16))
                         .foregroundColor(.white.opacity(0.9))
-                        .multilineTextAlignment(.center)
                     
                     Button("Explore Now") {
-                        // Handle explore action
-                    }
-                    .padding(.horizontal, 24)
-                    .padding(.vertical, 12)
-                    .background(Color.white)
-                    .foregroundColor(.black)
-                    .cornerRadius(25)
-                    .font(.system(size: 16, weight: .semibold))
+                                showComingSoonModal = true
+                            }
+                            .buttonStyle(FestivalButtonStyle())
+                            .sheet(isPresented: $showComingSoonModal) {
+                                ComingSoonModal()
+                                    .presentationDetents([.fraction(0.3)])
+                            }
+                    .buttonStyle(FestivalButtonStyle())
                 }
+                .padding(.horizontal, 20)
             }
             .cornerRadius(16)
             .padding(.horizontal, 20)
@@ -172,7 +170,9 @@ struct ExploreView: View {
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack(spacing: 16) {
                     ForEach(whatsNewItems, id: \.id) { item in
-                        WhatsNewCard(item: item)
+                        WhatsNewCard(item: item) {
+                            showComingSoonModal = true
+                        }
                     }
                 }
                 .padding(.horizontal, 20)
@@ -245,7 +245,9 @@ struct ExploreView: View {
                         category: popularItems[index].category,
                         rating: popularItems[index].rating,
                         image: popularItems[index].image
-                    )
+                    ){
+                        showComingSoonModal = true
+                    }
                 }
             }
             .padding(.horizontal, 20)
@@ -273,7 +275,9 @@ struct ExploreView: View {
             
             LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 12), count: 4), spacing: 12) {
                 ForEach(brandLogos, id: \.id) { brand in
-                    BrandLogoCard(brand: brand)
+                    BrandLogoCard(brand: brand){
+                        showComingSoonModal = true
+                    }
                 }
             }
             .padding(.horizontal, 20)
@@ -286,71 +290,114 @@ struct ExploreView: View {
 
 struct WhatsNewCard: View {
     let item: WhatsNewItem
+    var action: () -> Void
     
     var body: some View {
-        VStack(alignment: .leading, spacing: 8) {
-            ZStack {
-                RoundedRectangle(cornerRadius: 12)
-                    .fill(item.backgroundColor)
-                    .frame(width: 160, height: 120)
-                
-                VStack {
-                    Image(systemName: item.icon)
-                        .font(.system(size: 30))
-                        .foregroundColor(.white)
-                    
-                    if item.isNew {
-                        Text("NEW")
-                            .font(.caption2)
-                            .fontWeight(.bold)
-                            .foregroundColor(.white)
-                            .padding(.horizontal, 8)
-                            .padding(.vertical, 2)
-                            .background(Color.red)
-                            .cornerRadius(8)
+            Button(action: action) {  // Wrap entire card in button
+                VStack(alignment: .leading, spacing: 8) {
+                    ZStack {
+                        // Background Image with gradient overlay
+                        Image(item.imageName)
+                            .resizable()
+                            .scaledToFill()
+                            .frame(width: 160, height: 120)
+                            .clipped()
+                            .overlay(
+                                LinearGradient(
+                                    gradient: Gradient(colors: [.clear, .black.opacity(0.3)]),
+                                    startPoint: .top,
+                                    endPoint: .bottom
+                                )
+                            )
+                            .cornerRadius(12)
+                        
+                        // Existing content overlay
+                        VStack {
+                            Image(systemName: item.icon)
+                                .font(.system(size: 30))
+                                .foregroundColor(.white)
+                                .shadow(color: .black.opacity(0.5), radius: 2, x: 0, y: 1)
+                            
+                            if item.isNew {
+                                Text("NEW")
+                                    .font(.caption2)
+                                    .fontWeight(.bold)
+                                    .foregroundColor(.white)
+                                    .padding(.horizontal, 8)
+                                    .padding(.vertical, 2)
+                                    .background(Color.red)
+                                    .cornerRadius(8)
+                                    .shadow(color: .black.opacity(0.2), radius: 2, x: 0, y: 1)
+                            }
+                        }
                     }
+                    
+                    // Text content
+                    Text(item.title)
+                        .font(.system(size: 14, weight: .semibold))
+                        .foregroundColor(.primary)
+                        .lineLimit(2)
+                    
+                    Text(item.subtitle)
+                        .font(.caption)
+                        .foregroundColor(.secondary)
+                        .lineLimit(1)
                 }
+                .frame(width: 160)
             }
-            
-            Text(item.title)
-                .font(.system(size: 14, weight: .semibold))
-                .foregroundColor(.primary)
-                .lineLimit(2)
-            
-            Text(item.subtitle)
-                .font(.caption)
-                .foregroundColor(.secondary)
-                .lineLimit(1)
+            .buttonStyle(CardButtonStyle())  // Add custom button style
         }
-        .frame(width: 160)
     }
-}
+
+    // Custom button style to remove default button effects
+    struct CardButtonStyle: ButtonStyle {
+        func makeBody(configuration: Configuration) -> some View {
+            configuration.label
+                .scaleEffect(configuration.isPressed ? 0.97 : 1.0)
+                .animation(.easeOut(duration: 0.1), value: configuration.isPressed)
+                .contentShape(Rectangle())  // Make entire area tappable
+        }
+    }
 
 struct ExploreCategoryCard: View {
     let category: ExploreCategory
     
+    @State private var showComingSoonModal = false
+    
     var body: some View {
         Button(action: {
-            // Handle category selection
+            showComingSoonModal = true
         }) {
             VStack(spacing: 12) {
                 ZStack {
-                    RoundedRectangle(cornerRadius: 16)
-                        .fill(category.backgroundColor)
+                    // Background Image with overlay
+                    Image(category.imageName) // Add imageName to your model
+                        .resizable()
+                        .scaledToFill()
                         .frame(height: 100)
+                        .overlay(
+                            Color.black.opacity(0.2) // Adjust opacity as needed
+                                .cornerRadius(16)
+                        )
+                        .clipped()
+                        .cornerRadius(16)
                     
+                    // Existing content
                     VStack {
                         Image(systemName: category.icon)
                             .font(.system(size: 32))
                             .foregroundColor(.white)
+                            .shadow(color: .black.opacity(0.4), radius: 2, x: 0, y: 2)
                         
                         Text("\(category.count)")
                             .font(.caption)
                             .fontWeight(.semibold)
-                            .foregroundColor(.white.opacity(0.9))
+                            .foregroundColor(.white)
+                            .shadow(color: .black.opacity(0.4), radius: 2, x: 0, y: 1)
                     }
                 }
                 
+                // Title remains unchanged
                 Text(category.title)
                     .font(.system(size: 16, weight: .semibold))
                     .foregroundColor(.primary)
@@ -358,20 +405,38 @@ struct ExploreCategoryCard: View {
             }
         }
         .buttonStyle(PlainButtonStyle())
+        .sheet(isPresented: $showComingSoonModal) {
+            ComingSoonModal()
+                .presentationDetents([.fraction(0.3)])
+                .presentationDragIndicator(.visible)
+        }
     }
 }
 
 struct EventCard: View {
     let event: EventItem
     
+    @State private var showComingSoonModal = false
+    
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
             ZStack(alignment: .topTrailing) {
-                RoundedRectangle(cornerRadius: 12)
-                    .fill(event.backgroundColor)
+                // Image Background with Gradient Overlay
+                Image(event.imageName) // Add to your model
+                    .resizable()
+                    .scaledToFill()
                     .frame(width: 200, height: 120)
+                    .overlay(
+                        LinearGradient(
+                            gradient: Gradient(colors: [.clear, .black.opacity(0.2)]),
+                            startPoint: .top,
+                            endPoint: .bottom
+                        )
+                    )
+                    .clipped()
+                    .cornerRadius(12)
                 
-                // Date Badge
+                // Date Badge (unchanged)
                 Text(event.date)
                     .font(.caption2)
                     .fontWeight(.bold)
@@ -383,22 +448,42 @@ struct EventCard: View {
                     .padding(8)
             }
             
+            // Text Content (unchanged)
             VStack(alignment: .leading, spacing: 4) {
                 Text(event.title)
                     .font(.system(size: 16, weight: .semibold))
                     .foregroundColor(.primary)
                     .lineLimit(2)
                 
-                Text(event.location)
-                    .font(.caption)
-                    .foregroundColor(.secondary)
+                HStack {
+                    Image(systemName: "mappin.circle.fill")
+                        .font(.caption)
+                        .foregroundColor(.secondary)
+                    Text(event.location)
+                        .font(.caption)
+                        .foregroundColor(.secondary)
+                }
                 
-                Text(event.time)
-                    .font(.caption)
-                    .foregroundColor(.blue)
+                HStack {
+                    Image(systemName: "clock.fill")
+                        .font(.caption)
+                        .foregroundColor(.blue)
+                    Text(event.time)
+                        .font(.caption)
+                        .foregroundColor(.blue)
+                }
             }
         }
         .frame(width: 200)
+        .shadow(color: .black.opacity(0.1), radius: 5, x: 0, y: 2)
+        .onTapGesture {
+            showComingSoonModal = true
+        }
+        .sheet(isPresented: $showComingSoonModal) {
+            ComingSoonModal()
+                .presentationDetents([.fraction(0.3)])
+                .presentationDragIndicator(.visible)
+        }
     }
 }
 
@@ -408,62 +493,79 @@ struct PopularItemRow: View {
     let category: String
     let rating: Double
     let image: String
+    var action: () -> Void  // Add action handler
     
     var body: some View {
-        HStack(spacing: 12) {
-            // Rank Number
-            Text("\(rank)")
-                .font(.system(size: 18, weight: .bold))
-                .foregroundColor(.gray)
-                .frame(width: 20)
-            
-            // Item Image
-            Circle()
-                .fill(Color.gray.opacity(0.3))
-                .frame(width: 40, height: 40)
-                .overlay(
-                    Image(systemName: image)
-                        .foregroundColor(.gray)
-                )
-            
-            // Item Info
-            VStack(alignment: .leading, spacing: 2) {
-                Text(name)
-                    .font(.system(size: 16, weight: .semibold))
-                    .foregroundColor(.primary)
+        Button(action: action) {  // Wrap entire row in button
+            HStack(spacing: 12) {
+                // Rank Number
+                Text("\(rank)")
+                    .font(.system(size: 18, weight: .bold))
+                    .foregroundColor(.gray)
+                    .frame(width: 20)
                 
-                Text(category)
-                    .font(.caption)
-                    .foregroundColor(.secondary)
-            }
-            
-            Spacer()
-            
-            // Rating
-            HStack(spacing: 2) {
-                Image(systemName: "star.fill")
-                    .font(.caption)
-                    .foregroundColor(.yellow)
+                // Item Image
+                Circle()
+                    .fill(Color.gray.opacity(0.3))
+                    .frame(width: 40, height: 40)
+                    .overlay(
+                        Image(systemName: image)
+                            .foregroundColor(.gray)
+                    )
                 
-                Text(String(format: "%.1f", rating))
-                    .font(.caption)
-                    .foregroundColor(.secondary)
+                // Item Info
+                VStack(alignment: .leading, spacing: 2) {
+                    Text(name)
+                        .font(.system(size: 16, weight: .semibold))
+                        .foregroundColor(.primary)
+                    
+                    Text(category)
+                        .font(.caption)
+                        .foregroundColor(.secondary)
+                }
+                
+                Spacer()
+                
+                // Rating
+                HStack(spacing: 2) {
+                    Image(systemName: "star.fill")
+                        .font(.caption)
+                        .foregroundColor(.yellow)
+                    
+                    Text(String(format: "%.1f", rating))
+                        .font(.caption)
+                        .foregroundColor(.secondary)
+                }
             }
+            .padding(.vertical, 8)
+            .padding(.horizontal, 12)
+            .background(Color(.systemBackground))
+            .cornerRadius(12)
         }
-        .padding(.vertical, 8)
-        .padding(.horizontal, 12)
-        .background(Color(.systemBackground))
-        .cornerRadius(12)
+        .buttonStyle(PopularItemButtonStyle())  // Custom button style
+    }
+}
+
+// Custom button style for popular items
+struct PopularItemButtonStyle: ButtonStyle {
+    func makeBody(configuration: Configuration) -> some View {
+        configuration.label
+            .scaleEffect(configuration.isPressed ? 0.98 : 1.0)
+            .background(
+                configuration.isPressed ?
+                Color(.systemGray5).cornerRadius(12) :
+                Color(.systemBackground).cornerRadius(12)
+            )
+            .animation(.easeOut(duration: 0.15), value: configuration.isPressed)
     }
 }
 
 struct BrandLogoCard: View {
     let brand: BrandLogo
+    var action: () -> Void  // Add action handler
     
     var body: some View {
-        Button(action: {
-            // Handle brand selection
-        }) {
+        Button(action: action) {  // Use the passed action
             VStack(spacing: 8) {
                 Circle()
                     .fill(Color(.systemGray6))
@@ -480,7 +582,17 @@ struct BrandLogoCard: View {
                     .lineLimit(1)
             }
         }
-        .buttonStyle(PlainButtonStyle())
+        .buttonStyle(BrandLogoButtonStyle())  // Custom button style
+    }
+}
+
+// Custom button style for brand logos
+struct BrandLogoButtonStyle: ButtonStyle {
+    func makeBody(configuration: Configuration) -> some View {
+        configuration.label
+            .scaleEffect(configuration.isPressed ? 0.92 : 1.0)
+            .opacity(configuration.isPressed ? 0.9 : 1.0)
+            .animation(.interactiveSpring(response: 0.3, dampingFraction: 0.6), value: configuration.isPressed)
     }
 }
 
@@ -601,6 +713,7 @@ struct WhatsNewItem: Identifiable {
     let icon: String
     let backgroundColor: Color
     let isNew: Bool
+    let imageName: String
 }
 
 struct ExploreCategory: Identifiable {
@@ -609,6 +722,7 @@ struct ExploreCategory: Identifiable {
     let icon: String
     let count: Int
     let backgroundColor: Color
+    let imageName: String
 }
 
 struct EventItem: Identifiable {
@@ -618,6 +732,7 @@ struct EventItem: Identifiable {
     let date: String
     let time: String
     let backgroundColor: Color
+    let imageName: String
 }
 
 struct PopularItem {
@@ -635,26 +750,26 @@ struct BrandLogo: Identifiable {
 // MARK: - Sample Data
 
 private let whatsNewItems = [
-    WhatsNewItem(title: "VR Zone Opens", subtitle: "Level 2", icon: "visionpro", backgroundColor: .purple, isNew: true),
-    WhatsNewItem(title: "Artisan Bakery", subtitle: "Fresh Daily", icon: "birthday.cake", backgroundColor: .orange, isNew: true),
-    WhatsNewItem(title: "Tech Store", subtitle: "Latest Gadgets", icon: "iphone", backgroundColor: .blue, isNew: false),
-    WhatsNewItem(title: "Luxury Spa", subtitle: "Wellness Center", icon: "leaf", backgroundColor: .green, isNew: true)
+    WhatsNewItem(title: "VR Zone Opens", subtitle: "Level 2", icon: "visionpro", backgroundColor: .purple, isNew: true, imageName: "vr"),
+    WhatsNewItem(title: "Artisan Bakery", subtitle: "Fresh Daily", icon: "birthday.cake", backgroundColor: .orange, isNew: true, imageName: "bakery"),
+    WhatsNewItem(title: "Tech Store", subtitle: "Latest Gadgets", icon: "iphone", backgroundColor: .blue, isNew: false, imageName: "techstore"),
+    WhatsNewItem(title: "Luxury Spa", subtitle: "Wellness Center", icon: "leaf", backgroundColor: .green, isNew: true, imageName: "spa")
 ]
 
 private let exploreCategories = [
-    ExploreCategory(title: "Fashion & Beauty", icon: "tshirt", count: 120, backgroundColor: .pink),
-    ExploreCategory(title: "Food & Dining", icon: "fork.knife", count: 45, backgroundColor: .orange),
-    ExploreCategory(title: "Entertainment", icon: "gamecontroller", count: 15, backgroundColor: .purple),
-    ExploreCategory(title: "Electronics", icon: "iphone", count: 28, backgroundColor: .blue),
-    ExploreCategory(title: "Home & Living", icon: "house", count: 35, backgroundColor: .green),
-    ExploreCategory(title: "Kids & Family", icon: "figure.2.and.child.holdinghands", count: 22, backgroundColor: .yellow)
+    ExploreCategory(title: "Fashion & Beauty", icon: "tshirt", count: 120, backgroundColor: .pink, imageName: "fashion"),
+    ExploreCategory(title: "Food & Dining", icon: "fork.knife", count: 45, backgroundColor: .orange, imageName: "food"),
+    ExploreCategory(title: "Entertainment", icon: "gamecontroller", count: 15, backgroundColor: .purple, imageName: "entertainment"),
+    ExploreCategory(title: "Electronics", icon: "iphone", count: 28, backgroundColor: .blue, imageName: "electronics"),
+    ExploreCategory(title: "Home & Living", icon: "house", count: 35, backgroundColor: .green, imageName: "homeliving"),
+    ExploreCategory(title: "Kids & Family", icon: "figure.2.and.child.holdinghands", count: 22, backgroundColor: .yellow, imageName: "kidsplay")
 ]
 
 private let eventItems = [
-    EventItem(title: "Summer Fashion Show", location: "Atrium", date: "Jun 15", time: "7:00 PM", backgroundColor: .pink),
-    EventItem(title: "Kids Workshop", location: "Level 1", date: "Jun 16", time: "2:00 PM", backgroundColor: .yellow),
-    EventItem(title: "Live Music Night", location: "Food Court", date: "Jun 17", time: "8:00 PM", backgroundColor: .purple),
-    EventItem(title: "Art Exhibition", location: "Gallery", date: "Jun 18", time: "All Day", backgroundColor: .blue)
+    EventItem(title: "Summer Fashion Show", location: "Atrium", date: "Jun 15", time: "7:00 PM", backgroundColor: .pink, imageName: "fashionshow"),
+    EventItem(title: "Kids Workshop", location: "Level 1", date: "Jun 16", time: "2:00 PM", backgroundColor: .yellow, imageName: "kidsworkshop"),
+    EventItem(title: "Live Music Night", location: "Food Court", date: "Jun 17", time: "8:00 PM", backgroundColor: .purple, imageName: "livemusic"),
+    EventItem(title: "Art Exhibition", location: "Gallery", date: "Jun 18", time: "All Day", backgroundColor: .blue, imageName: "art")
 ]
 
 private let popularItems = [
@@ -675,3 +790,15 @@ private let brandLogos = [
 
 // Update your MainView switch statement:
 // case 2: ExploreView()
+struct FestivalButtonStyle: ButtonStyle {
+    func makeBody(configuration: Configuration) -> some View {
+        configuration.label
+            .padding(.horizontal, 24)
+            .padding(.vertical, 12)
+            .background(Color.white)
+            .foregroundColor(.purple) // Changed to match theme
+            .cornerRadius(25)
+            .font(.system(size: 16, weight: .semibold))
+            .scaleEffect(configuration.isPressed ? 0.95 : 1.0)
+    }
+}

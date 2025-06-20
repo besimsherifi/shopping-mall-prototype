@@ -9,26 +9,22 @@ import SwiftUI
 
 struct RestaurantCard: View {
     let restaurant: RestaurantItem
-    
+
     var body: some View {
         VStack(spacing: 8) {
-            // Image Container
-            RoundedRectangle(cornerRadius: 12)
-                .fill(restaurant.backgroundColor)
+            // Image as Card Cover
+            Image(restaurant.imageName)
+                .resizable()
+                .scaledToFit()
                 .frame(width: 140, height: 140)
+                .clipped()
+                .cornerRadius(12)
                 .overlay(
-                    // Placeholder for actual image
-                    VStack {
-                        Image(systemName: "fork.knife")
-                            .font(.system(size: 40))
-                            .foregroundColor(.white.opacity(0.8))
-                        
-                        Text(restaurant.name.prefix(1))
-                            .font(.system(size: 24, weight: .bold))
-                            .foregroundColor(.white)
-                    }
+                    RoundedRectangle(cornerRadius: 12)
+                        .stroke(Color.gray.opacity(0.3), lineWidth: 1)
                 )
-            
+                .shadow(color: Color.black.opacity(0.15), radius: 5, x: 0, y: 3)
+
             // Restaurant Name
             Text(restaurant.name)
                 .font(.system(size: 16, weight: .medium))

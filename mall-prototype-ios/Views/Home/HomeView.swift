@@ -10,11 +10,15 @@ import AVKit
 
 struct HomeView: View {
     @State private var player = AVPlayer()
+    @Binding var selectedTab: Int  // Add this
+    @State private var showComingSoonModal = false
+
+
     
     let quickAccessItems = [
-        QuickAccessItem(icon: "airplane", title: "Emirates\nSkywards", backgroundColor: Color(.systemGray6)),
-        QuickAccessItem(icon: "figure.walk", title: "Find\nwashroom", backgroundColor: Color(.systemGray6)),
-        QuickAccessItem(icon: "giftcard", title: "Emaar Gift\nCard", backgroundColor: Color(.systemGray6)),
+        QuickAccessItem(icon: "map.fill", title: "Mall\nDirectory", backgroundColor: Color(.systemGray6)),
+        QuickAccessItem(icon: "figure.walk", title: "Find\nWashroom", backgroundColor: Color(.systemGray6)),
+        QuickAccessItem(icon: "giftcard", title: "East Gate Gift\nCard", backgroundColor: Color(.systemGray6)),
         QuickAccessItem(icon: "wifi", title: "Free Wifi", backgroundColor: Color(.systemGray6)),
         QuickAccessItem(icon: "car.fill", title: "Find My Car", backgroundColor: Color(.systemGray6)),
         QuickAccessItem(icon: "bag.fill", title: "Personal\nShopping", backgroundColor: Color(.systemGray6))
@@ -25,17 +29,19 @@ struct HomeView: View {
             VStack(spacing: 0) {
                 Spacer()
                 // Sticky top bar
-                DubaiMallTopBar()
+                DubaiMallTopBar {
+                    selectedTab = 2
+                }
                 
                 // Scrollable content
                 ScrollView(.vertical, showsIndicators: false) {
                     VStack(spacing: 20) {
                         // Video Player - Full Screen Width
                         VideoPlayer(player: player)
-                            .aspectRatio(contentMode: .fill)
-                            .frame(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height * 0.6)
+                            .aspectRatio(16/9, contentMode: .fill)
+                            .frame(width: UIScreen.main.bounds.width)
                             .clipped()
-                            .edgesIgnoringSafeArea(.horizontal)
+
                             .onAppear {
                                 setupVideo()
                             }
@@ -68,8 +74,8 @@ struct HomeView: View {
                                 HStack(spacing: 16) {
                                     // Aquarium Offer Card
                                     OfferCard(
-                                        imageName: "aquarium_bg",
-                                        title: "DUBAI AQUARIUM & UNDERWA...",
+                                        imageName: "summersale",
+                                        title: "SUMMER SALE",
                                         mainText: "Flash Sale Alert:",
                                         subText: "Summer Fun Pass!",
                                         dateRange: "19 MAY - 4 JUN"
@@ -77,15 +83,15 @@ struct HomeView: View {
                                     
                                     // House of Hype Card
                                     OfferCard(
-                                        imageName: "hype_bg",
-                                        title: "HOUSE OF HYPE",
-                                        mainText: "Squad Pass at Hou",
-                                        subText: "Hype!",
+                                        imageName: "instantshopping",
+                                        title: "Instant Shopping",
+                                        mainText: "Extra sale for online",
+                                        subText: "Shopping!",
                                         dateRange: "1 MAY - 31 DEC"
                                     )
                                     
                                     OfferCard(
-                                        imageName: "hype_bg",
+                                        imageName: "musichype",
                                         title: "HOUSE OF MUSIC",
                                         mainText: "The Summer hits are here",
                                         subText: "Hype!",
@@ -108,10 +114,15 @@ struct HomeView: View {
                             
                             // Grid of Quick Access Items
                             LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 20), count: 3), spacing: 30) {
-                                ForEach(quickAccessItems) { item in
-                                    QuickAccessButton(item: item)
-                                }
-                            }
+                                           ForEach(quickAccessItems) { item in
+                                               QuickAccessButton(item: item) {
+                                                   // This closure will be called when tapped
+                                                   selectedTab = 1  // Switch to Navigate tab (index 1)
+                                               }
+                                           }
+                                       }
+                                    
+                                    
                             .padding(.horizontal, 20)
                         }
                         .padding(.vertical, 10)
@@ -145,7 +156,7 @@ struct HomeView: View {
     }
     
     private func setupVideo() {
-        guard let videoURL = Bundle.main.url(forResource: "video1", withExtension: "mp4") else {
+        guard let videoURL = Bundle.main.url(forResource: "videoo", withExtension: "mp4") else {
             print("Video file not found")
             return
         }

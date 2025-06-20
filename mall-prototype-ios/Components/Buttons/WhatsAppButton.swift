@@ -10,7 +10,7 @@ import SwiftUI
 struct WhatsAppButton: View {
     var body: some View {
         Button(action: {
-            // Handle WhatsApp action
+            openWhatsApp()
         }) {
             Image("whatsapp")
                 .resizable()
@@ -20,5 +20,12 @@ struct WhatsAppButton: View {
         }
         .padding(.trailing, 16)
         .padding(.bottom, 100)
+    }
+
+    private func openWhatsApp() {
+        let phoneNumber = "+38976227744".replacingOccurrences(of: "+", with: "")
+        if let url = URL(string: "https://wa.me/\(phoneNumber)"), UIApplication.shared.canOpenURL(url) {
+            UIApplication.shared.open(url)
+        }
     }
 }
