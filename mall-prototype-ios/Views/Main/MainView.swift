@@ -50,7 +50,7 @@ struct MainView: View {
                 }
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .background(Color(.systemGroupedBackground).ignoresSafeArea())
+            .background(Color(red: 0.949, green: 0.949, blue: 0.969).ignoresSafeArea())
             .animation(.easeInOut(duration: 0.3), value: selectedTab) // Add animation
             
             // Custom Tab Bar
