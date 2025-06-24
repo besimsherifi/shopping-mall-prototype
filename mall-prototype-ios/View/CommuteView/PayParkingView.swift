@@ -10,7 +10,7 @@ import SwiftUI
 struct PayParkingView: View {
     @Environment(\.dismiss) private var dismiss
     @State private var selectedDuration = 2
-    @State private var totalAmount = 6.0
+	@State private var totalAmount = 60.0
     @State private var showingScanner = false
     @State private var hasScannedTicket = true // Set to false initially in real app
     @State private var ticketNumber = "MPT-2024-456789"
@@ -102,25 +102,24 @@ struct PayParkingView: View {
                             .fontWeight(.semibold)
                         
                         VStack(spacing: 12) {
-                            DurationOption(duration: "1 hour", price: "$3.00", isSelected: selectedDuration == 1) {
+                            DurationOption(duration: "1 hour", price: "30MKD", isSelected: selectedDuration == 1) {
                                 selectedDuration = 1
-                                totalAmount = 3.0
+								totalAmount = 30.0
                             }
                             
-                            DurationOption(duration: "2 hours", price: "$6.00", isSelected: selectedDuration == 2) {
+                            DurationOption(duration: "2 hours", price: "60MKD", isSelected: selectedDuration == 2) {
                                 selectedDuration = 2
-                                totalAmount = 6.0
+								totalAmount = 60.0
                             }
                             
-                            DurationOption(duration: "4 hours", price: "$12.00", isSelected: selectedDuration == 4) {
-                                selectedDuration = 4
-                                totalAmount = 12.0
+                            DurationOption(duration: "3 hours", price: "90MKD", isSelected: selectedDuration == 3) {
+                                selectedDuration = 3
+								totalAmount = 90.0
                             }
-                            
-                            DurationOption(duration: "All day", price: "$20.00", isSelected: selectedDuration == 8) {
-                                selectedDuration = 8
-                                totalAmount = 20.0
-                            }
+							DurationOption(duration: "4 hours", price: "120MKD", isSelected: selectedDuration == 4) {
+								selectedDuration = 4
+								totalAmount = 120.0
+							}
                         }
                     }
                     .padding()
@@ -136,7 +135,7 @@ struct PayParkingView: View {
                             Text("Total Amount")
                                 .font(.headline)
                             Spacer()
-                            Text("$\(String(format: "%.2f", totalAmount))")
+                            Text("MKD\(String(format: "%.2f", totalAmount))")
                                 .font(.title2)
                                 .fontWeight(.bold)
                                 .foregroundColor(.blue)
@@ -168,7 +167,7 @@ struct PayParkingView: View {
                         
                         PaymentMethodRow(icon: "creditcard.fill", title: "Credit Card", subtitle: "•••• 4532")
                         PaymentMethodRow(icon: "applelogo", title: "Apple Pay", subtitle: "Touch ID or Face ID")
-                        PaymentMethodRow(icon: "dollarsign.circle.fill", title: "Mall Wallet", subtitle: "$45.60 available")
+                        PaymentMethodRow(icon: "dollarsign.circle.fill", title: "Mall Wallet", subtitle: "1250MKD available")
                     }
                     .padding()
                     .background(Color.white)

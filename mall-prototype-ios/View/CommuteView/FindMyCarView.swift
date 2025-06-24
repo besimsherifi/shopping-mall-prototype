@@ -77,7 +77,7 @@ struct FindMyCarView: View {
                     
                     VStack(spacing: 12) {
                         DetailRow(icon: "clock", title: "Entry Time", value: "2:45 PM")
-                        DetailRow(icon: "creditcard", title: "Rate", value: "$3.00/hour")
+                        DetailRow(icon: "creditcard", title: "Rate", value: "50MKD")
                         DetailRow(icon: "car.2", title: "Spot", value: "B-247")
                     }
                 }

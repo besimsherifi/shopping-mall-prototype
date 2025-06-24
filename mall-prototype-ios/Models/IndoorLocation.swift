@@ -33,7 +33,7 @@ struct IndoorLocation: Identifiable {
     static let availableLocations = [
         IndoorLocation(
             name: "Shortcut HQ",
-            coordinate: CLLocationCoordinate2D(latitude: 59.913132, longitude: 10.736364),
+			coordinate: CLLocationCoordinate2D(latitude: 59.91321, longitude: 10.73614),
             siteIdKey: "shortcutHQ"
         ),
         IndoorLocation(
