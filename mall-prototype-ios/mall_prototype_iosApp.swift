@@ -32,6 +32,7 @@ struct mall_prototype_iosApp: App {
                     }
                 }
             }
+            .preferredColorScheme(.light)
             .onAppear {
                 permissionsManager.refreshPermissionStatuses()
             }

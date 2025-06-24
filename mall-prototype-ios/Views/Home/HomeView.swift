@@ -16,12 +16,12 @@ struct HomeView: View {
 
     
     let quickAccessItems = [
-        QuickAccessItem(icon: "map.fill", title: "Mall\nDirectory", backgroundColor: Color(.systemGray6)),
-        QuickAccessItem(icon: "figure.walk", title: "Find\nWashroom", backgroundColor: Color(.systemGray6)),
-        QuickAccessItem(icon: "giftcard", title: "East Gate Gift\nCard", backgroundColor: Color(.systemGray6)),
-        QuickAccessItem(icon: "wifi", title: "Free Wifi", backgroundColor: Color(.systemGray6)),
-        QuickAccessItem(icon: "car.fill", title: "Find My Car", backgroundColor: Color(.systemGray6)),
-        QuickAccessItem(icon: "bag.fill", title: "Personal\nShopping", backgroundColor: Color(.systemGray6))
+        QuickAccessItem(icon: "map.fill", title: "Mall\nDirectory", backgroundColor: Color(red: 0.949, green: 0.949, blue: 0.969)),
+        QuickAccessItem(icon: "figure.walk", title: "Find\nWashroom", backgroundColor: Color(red: 0.949, green: 0.949, blue: 0.969)),
+        QuickAccessItem(icon: "giftcard", title: "East Gate Gift\nCard", backgroundColor: Color(red: 0.949, green: 0.949, blue: 0.969)),
+        QuickAccessItem(icon: "wifi", title: "Free Wifi", backgroundColor: Color(red: 0.949, green: 0.949, blue: 0.969)),
+        QuickAccessItem(icon: "car.fill", title: "Find My Car", backgroundColor: Color(red: 0.949, green: 0.949, blue: 0.969)),
+        QuickAccessItem(icon: "bag.fill", title: "Personal\nShopping", backgroundColor: Color(red: 0.949, green: 0.949, blue: 0.969))
     ]
     
     var body: some View {
@@ -140,7 +140,7 @@ struct HomeView: View {
                             }
                             .padding(.horizontal, 16)
                         }
-                        .background(Color(.systemBackground))
+                        .background(Color.white)
                         
                         // Bottom padding to account for tab bar
                         Spacer()

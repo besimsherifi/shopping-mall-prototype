@@ -48,7 +48,7 @@ struct ExploreView: View {
                         .frame(height: 100)
                 }
             }
-            .background(Color(.systemGroupedBackground))
+            .background(Color(red: 0.949, green: 0.949, blue: 0.969))
             .navigationTitle("Explore")
             .navigationBarTitleDisplayMode(.large)
         }
@@ -76,7 +76,7 @@ struct ExploreView: View {
             }
             .padding(.horizontal, 16)
             .padding(.vertical, 12)
-            .background(Color(.systemBackground))
+            .background(Color.white)
             .cornerRadius(12)
             .shadow(color: .black.opacity(0.05), radius: 2, x: 0, y: 1)
         }
@@ -95,7 +95,7 @@ struct ExploreView: View {
                     }
                     .padding(.horizontal, 16)
                     .padding(.vertical, 8)
-                    .background(selectedCategory == index ? Color.black : Color(.systemGray6))
+                    .background(selectedCategory == index ? Color.black : Color(red: 0.949, green: 0.949, blue: 0.969))
                     .foregroundColor(selectedCategory == index ? .white : .primary)
                     .cornerRadius(20)
                     .font(.system(size: 14, weight: .medium))
@@ -539,7 +539,7 @@ struct PopularItemRow: View {
             }
             .padding(.vertical, 8)
             .padding(.horizontal, 12)
-            .background(Color(.systemBackground))
+            .background(Color.white)
             .cornerRadius(12)
         }
         .buttonStyle(PopularItemButtonStyle())  // Custom button style
@@ -553,8 +553,8 @@ struct PopularItemButtonStyle: ButtonStyle {
             .scaleEffect(configuration.isPressed ? 0.98 : 1.0)
             .background(
                 configuration.isPressed ?
-                Color(.systemGray5).cornerRadius(12) :
-                Color(.systemBackground).cornerRadius(12)
+                Color(red: 0.898, green: 0.898, blue: 0.918).cornerRadius(12) :
+                Color.white.cornerRadius(12)
             )
             .animation(.easeOut(duration: 0.15), value: configuration.isPressed)
     }
@@ -568,7 +568,7 @@ struct BrandLogoCard: View {
         Button(action: action) {  // Use the passed action
             VStack(spacing: 8) {
                 Circle()
-                    .fill(Color(.systemGray6))
+                    .fill(Color(red: 0.949, green: 0.949, blue: 0.969))
                     .frame(width: 60, height: 60)
                     .overlay(
                         Text(brand.name.prefix(1))
@@ -621,7 +621,7 @@ struct FilterView: View {
                             }
                             .padding(.horizontal, 12)
                             .padding(.vertical, 6)
-                            .background(selectedPrice == index ? Color.black : Color(.systemGray6))
+                            .background(selectedPrice == index ? Color.black : Color(red: 0.949, green: 0.949, blue: 0.969))
                             .foregroundColor(selectedPrice == index ? .white : .primary)
                             .cornerRadius(8)
                         }

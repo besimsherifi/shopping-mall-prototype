@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5A000EEC2E0A9A620007F6DB /* Unicorn in Frameworks */ = {isa = PBXBuildFile; productRef = 5A000EEB2E0A9A620007F6DB /* Unicorn */; };
 		D8B7074E2E01A5360095C2CC /* Unicorn in Frameworks */ = {isa = PBXBuildFile; productRef = D8B7074D2E01A5360095C2CC /* Unicorn */; };
 /* End PBXBuildFile section */
 
@@ -29,6 +30,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D8B7074E2E01A5360095C2CC /* Unicorn in Frameworks */,
+				5A000EEC2E0A9A620007F6DB /* Unicorn in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -81,6 +83,7 @@
 			name = "mall-prototype-ios";
 			packageProductDependencies = (
 				D8B7074D2E01A5360095C2CC /* Unicorn */,
+				5A000EEB2E0A9A620007F6DB /* Unicorn */,
 			);
 			productName = "mall-prototype-ios";
 			productReference = D8AE34422DDDF98600D54771 /* mall-prototype-ios.app */;
@@ -111,6 +114,7 @@
 			mainGroup = D8AE34392DDDF98600D54771;
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
+				5A000EEA2E0A9A620007F6DB /* XCRemoteSwiftPackageReference "unicorn-ios-sdk" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = D8AE34432DDDF98600D54771 /* Products */;
@@ -270,7 +274,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"mall-prototype-ios/Preview Content\"";
-				DEVELOPMENT_TEAM = 5876G593AT;
+				DEVELOPMENT_TEAM = DLFLF8ZQDD;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_CFBundleDisplayName = "East Gate";
@@ -303,7 +307,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"mall-prototype-ios/Preview Content\"";
-				DEVELOPMENT_TEAM = 5876G593AT;
+				DEVELOPMENT_TEAM = DLFLF8ZQDD;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_CFBundleDisplayName = "East Gate";
@@ -351,7 +355,23 @@
 		};
 /* End XCConfigurationList section */
 
+/* Begin XCRemoteSwiftPackageReference section */
+		5A000EEA2E0A9A620007F6DB /* XCRemoteSwiftPackageReference "unicorn-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/time-location-systems/unicorn-ios-sdk";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 25.6.20;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
 /* Begin XCSwiftPackageProductDependency section */
+		5A000EEB2E0A9A620007F6DB /* Unicorn */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 5A000EEA2E0A9A620007F6DB /* XCRemoteSwiftPackageReference "unicorn-ios-sdk" */;
+			productName = Unicorn;
+		};
 		D8B7074D2E01A5360095C2CC /* Unicorn */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = Unicorn;

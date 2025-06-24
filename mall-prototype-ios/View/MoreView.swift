@@ -38,7 +38,7 @@ struct MoreView: View {
                             .foregroundColor(.gray)
                     }
                     .padding()
-                    .background(Color(.systemBackground))
+                    .background(Color.white)
                     .cornerRadius(12)
                     .shadow(color: Color.black.opacity(0.05), radius: 4, x: 0, y: 2)
                 }
@@ -64,7 +64,7 @@ struct MoreView: View {
             .padding(.top)
         }
         .navigationTitle("More")
-        .background(Color(.systemGroupedBackground).ignoresSafeArea())
+        .background(Color(red: 0.949, green: 0.949, blue: 0.969).ignoresSafeArea())
     }
     
     func openWhatsApp() {
@@ -112,7 +112,7 @@ struct MoreRow: View {
                     .foregroundColor(.gray)
             }
             .padding()
-            .background(Color(.systemBackground))
+            .background(Color.white)
             .cornerRadius(12)
             .shadow(color: Color.black.opacity(0.03), radius: 2, x: 0, y: 1)
         }
