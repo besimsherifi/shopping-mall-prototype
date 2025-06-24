@@ -84,7 +84,7 @@ struct IndoorMapViewRepresentable: UIViewRepresentable {
                 
                 // Center map on target REMA coordinates when in indoor mode
                 if self.isIndoorMode {
-                    let targetCoordinate = CLLocationCoordinate2D(latitude: 59.91506, longitude: 10.78766)
+					let targetCoordinate = CLLocationCoordinate2D(latitude: 59.91321, longitude: 10.73614)
                     let camera = MKMapCamera(
                         lookingAtCenter: targetCoordinate,
                         fromDistance: 150, // Increased distance for better overview
@@ -155,17 +155,17 @@ struct IndoorMapViewRepresentable: UIViewRepresentable {
             
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                 // Use specific REMA coordinates for consistent centering
-                let targetCoordinate = CLLocationCoordinate2D(latitude: 59.91506, longitude: 10.78766)
+				let targetCoordinate = CLLocationCoordinate2D(latitude: 59.91325, longitude: 10.73609)
                 
                 let camera = MKMapCamera(
                     lookingAtCenter: targetCoordinate,
-                    fromDistance: 150, // Slightly pulled back for better overview
+                    fromDistance: 100, // Slightly pulled back for better overview
                     pitch: 0,
-                    heading: 55
+                    heading: 114
                 )
                 
                 // Slower, more gradual zoom animation for site loading
-                UIView.animate(withDuration: 3.0, delay: 0, options: [.curveEaseInOut], animations: {
+                UIView.animate(withDuration: 2.0, delay: 0, options: [.curveEaseInOut], animations: {
                     mapView.setCamera(camera, animated: false)
                 })
                 print("🎯 Camera centered on target coordinates: \(targetCoordinate)")

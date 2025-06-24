@@ -11,7 +11,7 @@ import Unicorn
 
 struct NavigateView: View {
     @State private var region = MKCoordinateRegion(
-        center: CLLocationCoordinate2D(latitude: 59.915017, longitude: 10.788041), // REMA 1000 Ensjø coordinates
+		center: CLLocationCoordinate2D(latitude: 59.91321, longitude: 10.73614), // REMA 1000 Ensjø coordinates
         span: MKCoordinateSpan(latitudeDelta: 0.002, longitudeDelta: 0.002) // Zoomed in for building level
     )
     
@@ -21,7 +21,7 @@ struct NavigateView: View {
     @State private var userLocation: CLLocationCoordinate2D?
     
     // REMA location (default for this demo)
-    private let remaLocation = IndoorLocation.availableLocations.first { $0.siteIdKey == "remaEnsjo" }!
+    private let remaLocation = IndoorLocation.availableLocations.first { $0.siteIdKey == "shortcutHQ" }!
     
     var body: some View {
         NavigationView {
@@ -97,7 +97,7 @@ struct NavigateView: View {
                         .font(.headline)
                         .multilineTextAlignment(.center)
                     
-                    Text("Switch to indoor navigation for precise positioning inside REMA 1000 Ensjø")
+                    Text("Switch to indoor navigation for precise positioning inside Shortcut Norway HQ")
                         .font(.subheadline)
                         .foregroundColor(.secondary)
                         .multilineTextAlignment(.center)
@@ -129,7 +129,7 @@ struct NavigateView: View {
                             .foregroundColor(.green)
                     }
                     
-                    Text("REMA 1000 Ensjø")
+                    Text("Shortcut Norway HQ")
                         .font(.subheadline)
                         .foregroundColor(.secondary)
                     

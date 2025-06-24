@@ -64,7 +64,7 @@ struct EVChargingView: View {
                         VStack(spacing: 12) {
                             DetailRow(icon: "clock", title: "Time Remaining", value: chargingTime)
                             DetailRow(icon: "bolt.fill", title: "Charging Rate", value: "7.2 kW")
-                            DetailRow(icon: "dollarsign.circle", title: "Cost", value: "$0.25/kWh")
+                            DetailRow(icon: "dollarsign.circle", title: "Cost", value: "0.25MKD/kWh")
                             DetailRow(icon: "target", title: "Target", value: "80%")
                         }
                     }
