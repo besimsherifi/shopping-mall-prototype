@@ -8,6 +8,7 @@
 import SwiftUI
 import MapKit
 import Unicorn
+import CoreLocation
 
 struct NavigateView: View {
     @State private var region = MKCoordinateRegion(
@@ -19,6 +20,13 @@ struct NavigateView: View {
     @State private var showingIndoorNav = false
     @State private var isIndoorMode = false
     @State private var userLocation: CLLocationCoordinate2D?
+    @State private var currentLocation: CLLocationCoordinate2D?
+    @State private var locationManager = CLLocationManager()
+    @State private var locationDelegate: LocationDelegate?
+    @State private var isNearTargetLocation = false
+    
+    // Target location for indoor navigation
+    private let targetLocation = CLLocationCoordinate2D(latitude: 59.91325, longitude: 10.73609)
     
     // REMA location (default for this demo)
     private let remaLocation = IndoorLocation.availableLocations.first { $0.siteIdKey == "shortcutHQ" }!
@@ -36,8 +44,10 @@ struct NavigateView: View {
                     
                     Spacer()
                     
-                    // Indoor Navigation Toggle
-                    indoorNavToggle
+                    // Indoor Navigation Toggle - Only show when near target location
+                    if isNearTargetLocation {
+                        indoorNavToggle
+                    }
                 }
             }
             .navigationTitle("Navigate")
@@ -45,6 +55,8 @@ struct NavigateView: View {
             .onAppear {
                 // Center map on REMA location
                 centerOnRemaLocation()
+                // Start location tracking
+                startLocationTracking()
             }
         }
     }
@@ -74,15 +86,20 @@ struct NavigateView: View {
         .shadow(color: .black.opacity(0.1), radius: 5)
     }
     
+    
     private var mapView: some View {
-        IndoorMapViewRepresentable(
-            region: $region,
-            isIndoorMode: $isIndoorMode,
-            userLocation: $userLocation
-        )
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .ignoresSafeArea()
+        ZStack {
+            IndoorMapViewRepresentable(
+                region: $region,
+                isIndoorMode: $isIndoorMode,
+                userLocation: $userLocation
+            )
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .ignoresSafeArea()
+            
+        }
     }
+    
     
     private var indoorNavToggle: some View {
         VStack(spacing: 16) {
@@ -160,6 +177,48 @@ struct NavigateView: View {
         }
     }
     
+    private func startLocationTracking() {
+        guard CLLocationManager.locationServicesEnabled() else {
+            print("❌ Location services are disabled on this device")
+            return
+        }
+        
+        locationDelegate = LocationDelegate(onLocationUpdate: { location in
+            DispatchQueue.main.async {
+                self.currentLocation = location.coordinate
+                print("📍 Location updated: \(location.coordinate)")
+                self.checkProximityToTarget()
+            }
+        })
+        
+        locationManager.delegate = locationDelegate
+        
+        print("🔐 Requesting location permission...")
+        locationManager.requestWhenInUseAuthorization()
+        
+        print("🎯 Starting location updates...")
+        locationManager.desiredAccuracy = kCLLocationAccuracyBest
+        locationManager.startUpdatingLocation()
+    }
+    
+    private func checkProximityToTarget() {
+        guard let currentLocation = currentLocation else { 
+            print("❌ No current location available for proximity check")
+            return 
+        }
+        
+        let distance = CLLocation(latitude: currentLocation.latitude, longitude: currentLocation.longitude)
+            .distance(from: CLLocation(latitude: targetLocation.latitude, longitude: targetLocation.longitude))
+        
+        print("📍 Current location: \(currentLocation.latitude), \(currentLocation.longitude)")
+        print("🎯 Target location: \(targetLocation.latitude), \(targetLocation.longitude)")
+        print("📏 Distance to target: \(distance) meters")
+        
+        // Show indoor navigation button if within 20 meters of target location
+        isNearTargetLocation = distance <= 20
+        print("🔘 Indoor nav button visible: \(isNearTargetLocation)")
+    }
+    
     private func startIndoorNavigation() {
         print("Starting indoor navigation for REMA 1000 Ensjø")
         
@@ -220,5 +279,44 @@ struct NavigateView: View {
         isIndoorMode = false
         userLocation = nil
         print("Indoor navigation stopped successfully")
+    }
+}
+
+
+class LocationDelegate: NSObject, CLLocationManagerDelegate {
+    var onLocationUpdate: (CLLocation) -> Void
+    
+    init(onLocationUpdate: @escaping (CLLocation) -> Void) {
+        self.onLocationUpdate = onLocationUpdate
+    }
+    
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        guard let location = locations.last else { return }
+        print("✅ Location received: \(location.coordinate)")
+        onLocationUpdate(location)
+    }
+    
+    func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
+        print("🔐 Location authorization changed: \(status.rawValue)")
+        switch status {
+        case .notDetermined:
+            print("📍 Location permission not determined")
+        case .denied:
+            print("❌ Location permission denied")
+        case .restricted:
+            print("🚫 Location permission restricted")
+        case .authorizedWhenInUse:
+            print("✅ Location permission granted (when in use)")
+            manager.startUpdatingLocation()
+        case .authorizedAlways:
+            print("✅ Location permission granted (always)")
+            manager.startUpdatingLocation()
+        @unknown default:
+            print("❓ Unknown location permission status")
+        }
+    }
+    
+    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
+        print("❌ Location manager failed with error: \(error.localizedDescription)")
     }
 }
